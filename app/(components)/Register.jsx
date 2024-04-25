@@ -7,18 +7,38 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
   const URL = process.env.APP_API_URL;
   const { toast } = useToast();
+  const router = useRouter();
+
+  const navigateOnSuccess = () => {
+    setTimeout(() => {
+      router.push("/");
+    }, 1500);
+
+    return toast({
+      title: "Navigating to Home Page!",
+      duration: 2000,
+      action: <ToastAction altText="Close">Close</ToastAction>,
+    });
+  };
 
   const {
     register,
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm({ resolver: yupResolver(formSchema) });
+  } = useForm({
+    resolver: yupResolver(formSchema),
+  });
   const [isVenueManager, setIsVenueManager] = useState(false);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
+  const [modalMessage, setModalMessage] = useState("null");
   const handleOnChange = () => {
     setIsVenueManager(!isVenueManager);
   };
@@ -32,48 +52,48 @@ export default function Register() {
         body: JSON.stringify(formData),
       };
       const res = await fetch(`${URL}auth/register`, options);
+
+      setIsButtonLoading(!isButtonLoading);
+
       if (!res.ok) {
-        throw new Error("Error! Failed to register user.", res.statusText);
+        const errorData = await res.json();
+        const errorMessage = errorData.errors[0].message;
+        toast({
+          title: "Something went wrong!",
+          description: errorMessage,
+          action: <ToastAction altText="Close">Close</ToastAction>,
+          variant: "destructive",
+        });
+        return;
       }
 
       const responseData = await res.json();
-      toast({
-        title: `Welcome ${
+      setModalMessage(
+        `Welcome! 👋 ${
           responseData.data.name.charAt(0).toUpperCase() +
           responseData.data.name.slice(1)
-        }! You are now registered.`,
-        description: "Redirecting to Login.",
-        action: <ToastAction altText="Close">Close</ToastAction>,
-      });
+        } !`
+      );
+
+      document.getElementById("my_modal_2").showModal();
 
       setTimeout(() => {
         reset();
-      }, 1500);
+      }, 2000);
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsButtonLoading(false);
     }
   };
 
   return (
     <>
-      <button
-        onClick={() => {
-          toast({
-            title: `Welcome USERNAME! You are now registered.`,
-            description: "Redirecting to Login.",
-            action: (
-              <ToastAction altText="Goto schedule to undo">Close</ToastAction>
-            ),
-          });
-        }}
-      >
-        Click me
-      </button>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col max-w-[400px] gap-2"
+        className="flex flex-col max-w-[400px] gap-4"
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           <Label htmlFor="name">Name</Label>
 
           <Input
@@ -82,6 +102,7 @@ export default function Register() {
             {...register("name", {
               required: "Name is required.",
             })}
+            className="text-gray-700"
           />
           {errors.name && (
             <p className="text-red-500 text-xs">{errors.name.message}</p>
@@ -97,6 +118,7 @@ export default function Register() {
             {...register("email", {
               required: "Email is required.",
             })}
+            className="text-gray-700"
           />
           {errors.email && (
             <p className="text-red-500 text-xs">{errors.email.message}</p>
@@ -112,14 +134,15 @@ export default function Register() {
             {...register("password", {
               required: "Password is required.",
               minLength: {
-                value: 6,
-                message: "Password must be at least 6 characters.",
+                value: 8,
+                message: "Password must be at least 8 characters.",
               },
               maxLength: {
-                value: 20,
-                message: "Password must be at most 20 characters.",
+                value: 50,
+                message: "Password must be at most 50 characters.",
               },
             })}
+            className="text-gray-700"
           />
           {errors.password && (
             <p className="text-red-500 text-xs">{errors.password.message}</p>
@@ -142,7 +165,9 @@ export default function Register() {
                 value: 120,
                 message: "Bio must be at most 120 characters.",
               },
+              required: false,
             })}
+            className="text-gray-700"
           />
         </div>
 
@@ -157,9 +182,14 @@ export default function Register() {
           <Input
             type="text"
             name="avatar.url"
-            placeholder="https://img.service.com/avatar.jpg"
+            placeholder="Image URL must be valid"
+            defaultValue={"https://source.unsplash.com/random"}
             {...register("avatar.url")}
+            className="text-gray-700"
           />
+          <small className="font-light text-[13px] text-gray-400">
+            Please add a valid URL or leave it untouched.
+          </small>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -173,9 +203,14 @@ export default function Register() {
           <Input
             type="text"
             name="banner.url"
-            placeholder="https://img.service.com/avatar.jpg"
+            placeholder="Image URL must be valid"
+            defaultValue={"https://source.unsplash.com/random"}
             {...register("banner.url")}
+            className="text-gray-700"
           />
+          <small className="font-light text-[13px] text-gray-400">
+            Please add a valid URL or leave it untouched.
+          </small>
         </div>
 
         <div className="flex items-center space-x-2 gap-1">
@@ -195,8 +230,39 @@ export default function Register() {
             Venue Manager
           </Label>
         </div>
-        <button type="submit">Submit</button>
+
+        {isButtonLoading ? (
+          <Button disabled>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Please wait
+          </Button>
+        ) : (
+          <Button type="submit" variant="secondary">
+            Submit
+          </Button>
+        )}
       </form>
+      <button
+        className="btn"
+        onClick={() => document.getElementById("my_modal_2").showModal()}
+      >
+        open modal
+      </button>
+
+      <dialog id="my_modal_2" className="modal text-black">
+        <div className="modal-box w-full h-[30%]  bg-white flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center">
+            <h1 className="font-bold text-xl">{modalMessage}</h1>
+            <h2 className="font-bold text-lg py-5">
+              Thank You For Registering
+            </h2>
+            <p className="py-4">Press ESC key or click outside to close</p>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button onClick={navigateOnSuccess}>close</button>
+        </form>
+      </dialog>
     </>
   );
 }
