@@ -82,3 +82,13 @@
     :target {
       scroll-margin-block: 5ex;
     }
+
+   
+
+  .modal-box {
+   max-width: 50rem !important;
+  }
+
+  .modal-backdrop{
+    background-color: rgba(0, 0, 0, 0.5);
+  }
