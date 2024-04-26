@@ -8,7 +8,6 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/lib/constants";
-
 export default function Login() {
   const URL = process.env.APP_API_URL;
   const { toast } = useToast();
@@ -19,14 +18,6 @@ export default function Login() {
   } = useForm({
     resolver: yupResolver(loginSchema),
   });
-
-  const handleOnClick = () => {
-    return toast({
-      title: "Logged In!",
-      duration: 2000,
-      action: <ToastAction altText="Close">Close</ToastAction>,
-    });
-  };
 
   const onSubmit = async (data) => {
     try {
@@ -56,6 +47,7 @@ export default function Login() {
       const userName =
         responseData.data.name.charAt(0).toUpperCase() +
         responseData.data.name.slice(1);
+        sessionStorage.setItem("userData", JSON.stringify(responseData.data));
        return toast({
          title: `Logged In as: ${userName}`,
          duration: 3000,
