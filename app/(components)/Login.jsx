@@ -8,9 +8,12 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/lib/constants";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 export default function Login() {
   const URL = process.env.APP_API_URL;
   const { toast } = useToast();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -42,17 +45,24 @@ export default function Login() {
           action: <ToastAction altText="Close">Close</ToastAction>,
         });
       }
-
       const responseData = await res.json();
+       Cookies.set("userData", JSON.stringify(responseData.data), {
+         secure: true,
+         sameSite: "strict",
+       });
       const userName =
         responseData.data.name.charAt(0).toUpperCase() +
         responseData.data.name.slice(1);
-        sessionStorage.setItem("userData", JSON.stringify(responseData.data));
-       return toast({
-         title: `Logged In as: ${userName}`,
-         duration: 3000,
-         action: <ToastAction altText="Close">Close</ToastAction>,
-       });
+
+         setTimeout(() => {
+           router.push("/");
+         }, 1500);
+         
+      return toast({
+        title: `Logged In as: ${userName}`,
+        duration: 2000,
+        action: <ToastAction altText="Close">Close</ToastAction>,
+      });
     } catch (error) {
       console.log(error);
     }
