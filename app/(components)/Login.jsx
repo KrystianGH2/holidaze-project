@@ -45,19 +45,29 @@ export default function Login() {
           action: <ToastAction altText="Close">Close</ToastAction>,
         });
       }
+
       const responseData = await res.json();
-       Cookies.set("userData", JSON.stringify(responseData.data), {
-         secure: true,
-         sameSite: "strict",
-       });
+      Cookies.set("userData", JSON.stringify(responseData.data), {
+        secure: true,
+        sameSite: "strict",
+      });
+
+      Cookies.set(
+        "accessToken",
+        JSON.stringify(responseData.data.accessToken),
+        {
+          secure: true,
+          sameSite: "strict",
+        }
+      );
       const userName =
         responseData.data.name.charAt(0).toUpperCase() +
         responseData.data.name.slice(1);
 
-         setTimeout(() => {
-           router.push("/");
-         }, 1500);
-         
+      setTimeout(() => {
+        router.push("/");
+      }, 1500);
+
       return toast({
         title: `Logged In as: ${userName}`,
         duration: 2000,
