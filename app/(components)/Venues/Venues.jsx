@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getAllVenues } from "@/lib/api";
 import { useStore } from "@/lib/useStore";
 import { PaginationDemo } from "../Pagination";
+import Link from "next/link";
 
 export default function Venues() {
   const [venues, setVenues] = useState(null);
@@ -23,8 +24,6 @@ export default function Venues() {
         const data = await res;
         setVenues(data.data);
         setMeta(data.meta);
-        console.log(data);
-        console.log(data.meta);
         setMetaCurrentPage(data.meta.currentPage);
         setTotalPages(data.meta.pageCount);
       } catch (err) {
@@ -47,7 +46,11 @@ export default function Venues() {
     <div>
       {venues &&
         venues.map((venue) => {
-          return <div key={venue.id}>{venue.name}</div>;
+          return (
+            <div key={venue.id}>
+              <Link href={`/Venue/${venue.id}`}>{venue.name}</Link>
+            </div>
+          );
         })}
 
       <PaginationDemo
