@@ -6,9 +6,12 @@ import { profileSchema } from "@/lib/constants";
 import Cookies from "js-cookie";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/app/Context/AuthContext";
 
 export const useProfileLogic = () => {
+  const { isLoggedIn, redirectUser } = useAuth();
   const { toast } = useToast();
+
   const userDataFromCookie = Cookies.get("userData");
   const parsedUserData = userDataFromCookie
     ? JSON.parse(userDataFromCookie)
@@ -17,7 +20,6 @@ export const useProfileLogic = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [isFormDisabled, setFormDisabled] = useState(true);
   const [isVenueManager, setIsVenueManager] = useState(false);
-
   const userName = parsedUserData ? parsedUserData.name : null;
 
   useEffect(() => {
@@ -37,7 +39,6 @@ export const useProfileLogic = () => {
         console.error(err);
       }
     };
-
     showProfiles();
   }, [userName]);
 
@@ -104,6 +105,7 @@ export const useProfileLogic = () => {
     handleOnChange,
     onSubmit,
     isVenueManager,
-  
+    isLoggedIn,
+    redirectUser,
   };
 };
