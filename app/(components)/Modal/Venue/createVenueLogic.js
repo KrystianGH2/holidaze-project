@@ -54,7 +54,6 @@ export default function useVenueLogic() {
   };
 
   return {
-    handleOnClick,
     handleSubmit,
     onSubmit,
     register,

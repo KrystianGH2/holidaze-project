@@ -6,7 +6,6 @@ import RedirectModal from "../redirectModal";
 import useVenueLogic from "./createVenueLogic";
 export default function CreateVenue() {
   const {
-    handleOnClick,
     handleSubmit,
     onSubmit,
     register,
@@ -36,7 +35,7 @@ export default function CreateVenue() {
       )}
       <div>
         <dialog id="my_modal_2" className="modal text-black">
-          <div className="modal-box w-full h-[80%] bg-white flex flex-col justify-center items-center">
+          <div className="modal-box w-full h-[90%] bg-white flex flex-col justify-center items-center">
             <div className="flex flex-col justify-center items-center">
               <h1 className="font-bold text-xl">{""}</h1>
               <h2 className="font-bold text-lg py-5">Create a venue</h2>
@@ -140,7 +139,6 @@ export default function CreateVenue() {
               <p className="py-4">Press ESC key or click outside to Cancel</p>
             </div>
           </div>
-          <Button onClick={handleOnClick}>Show toast</Button>
           <form method="dialog" className="modal-backdrop">
             <button>close</button>
           </form>
