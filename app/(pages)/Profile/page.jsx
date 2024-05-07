@@ -10,11 +10,11 @@ export default function page() {
         <Profile />
       </AuthProvider>
 
-      <h1 className="text-2xl py-4 font-bold">My Venues</h1>
+        <h1 className="text-2xl py-4 font-bold">My Venues</h1>
 
-      <section>
-        <MyVenues />
-      </section>
+        <section>
+          <MyVenues />
+        </section>
     </>
   );
 }

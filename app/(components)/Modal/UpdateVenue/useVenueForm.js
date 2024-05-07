@@ -1,35 +1,45 @@
-// useVenueLogic.js
+"use client"
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { updateVenue } from "@/lib/api";
 import { useToast } from "@/components/ui/use-toast";
-import { useAuth } from "@/app/Context/AuthContext";
 import { venueSchema } from "@/lib/constants";
-import { createVenue } from "@/lib/api";
 
-export default function useVenueLogic() {
-  const { isLoggedIn, redirectUser, message, isVenueManager } = useAuth();
+export function useVenueForm({ venueId, venues }) {
   const { toast } = useToast();
 
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm({
     resolver: yupResolver(venueSchema),
   });
 
+  const selectedVenue = venues?.find((venue) => venue.id === venueId);
+
+  useEffect(() => {
+    if (selectedVenue) {
+      Object.keys(selectedVenue).forEach((key) => {
+        setValue(key, selectedVenue[key]);
+      });
+    }
+  }, [selectedVenue, setValue]);
+
   const onSubmit = async (data) => {
     try {
-      const res = await createVenue(data);
+      const res = await updateVenue(data, venueId);
       if (res) {
         setTimeout(() => {
           window.location.reload();
         }, 3000);
       }
       toast({
-        title: "Venue Created!",
+        title: "Venue Updated!",
         duration: 2200,
-        description: "Venue successfully created!",
+        description: "Venue successfully updated!",
         variant: "success",
       });
 
@@ -38,20 +48,11 @@ export default function useVenueLogic() {
       console.log(err);
       return toast({
         title: "Something went wrong!",
-        description: "Failed to create Venue. Please try again later.",
+        description: "Failed to update Venue. Please try again later.",
         variant: "destructive",
       });
     }
   };
 
-  return {
-    handleSubmit,
-    onSubmit,
-    register,
-    errors,
-    isLoggedIn,
-    redirectUser,
-    message,
-    isVenueManager
-  };
+  return { register, errors, handleSubmit, onSubmit };
 }
