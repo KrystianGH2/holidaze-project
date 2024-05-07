@@ -1,5 +1,4 @@
 // useVenueLogic.js
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useToast } from "@/components/ui/use-toast";
@@ -8,12 +7,8 @@ import { venueSchema } from "@/lib/constants";
 import { createVenue } from "@/lib/api";
 
 export default function useVenueLogic() {
-  const { isLoggedIn, redirectUser, message, isUserVenueManager } = useAuth();
+  const { isLoggedIn, redirectUser, message, isVenueManager } = useAuth();
   const { toast } = useToast();
-
- useEffect(() => {
-    isUserVenueManager
- },[isUserVenueManager])
 
   const {
     register,
@@ -57,5 +52,6 @@ export default function useVenueLogic() {
     isLoggedIn,
     redirectUser,
     message,
+    isVenueManager
   };
 }
