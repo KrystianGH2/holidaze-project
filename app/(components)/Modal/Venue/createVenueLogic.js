@@ -5,10 +5,36 @@ import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/app/Context/AuthContext";
 import { venueSchema } from "@/lib/constants";
 import { createVenue } from "@/lib/api";
+import { useEffect, useState } from "react";
+import {  getProfiles } from "@/lib/api";
+import Cookies from "js-cookie";
 
 export default function useVenueLogic() {
-  const { isLoggedIn, redirectUser, message, isVenueManager } = useAuth();
+  const { isLoggedIn, redirectUser, message, } = useAuth();
   const { toast } = useToast();
+
+  const userDataFromCookie = Cookies.get("userData");
+  const parsedUserData = userDataFromCookie
+    ? JSON.parse(userDataFromCookie)
+    : null;
+  const userName = parsedUserData ? parsedUserData.name : null;
+  const [iVenueManager, setIVenueManager] = useState(null);
+
+   useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        if (!userName) {
+          throw new Error("User data not found in cookie");
+        }
+        const res2 = await getProfiles(userName);
+        setIVenueManager(res2.data.venueManager);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchProfile();
+  }, [userName]);
 
   const {
     register,
@@ -52,6 +78,6 @@ export default function useVenueLogic() {
     isLoggedIn,
     redirectUser,
     message,
-    isVenueManager
+    iVenueManager
   };
 }
