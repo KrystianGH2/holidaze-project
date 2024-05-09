@@ -4,41 +4,47 @@ import { useEffect, useState } from "react";
 import { getAllVenueByProfile, getProfiles } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import UpdateVenue from "../Modal/UpdateVenue/UpdateVenue";
-
+import useDeleteVenue from "../Modal/DeleteVenue/useDeleteVenue";
 export default function MyVenues() {
   const userDataFromCookie = Cookies.get("userData");
-  const parsedUserData = userDataFromCookie
-    ? JSON.parse(userDataFromCookie)
+  const userName = userDataFromCookie
+    ? JSON.parse(userDataFromCookie).name
     : null;
-  const userName = parsedUserData ? parsedUserData.name : null;
+
   const [venues, setVenues] = useState(null);
   const [selectedVenueId, setSelectedVenueId] = useState(null);
   const [iVenueManager, setIVenueManager] = useState(null);
 
   useEffect(() => {
-    const myVenues = async () => {
+    const fetchVenues = async () => {
       try {
-        if (!userName) {
-          throw new Error("User data not found in cookie");
-        }
-        const res = await getAllVenueByProfile(userName);
-        setVenues(res.data);
-        const res2 = await getProfiles(userName);
-        setIVenueManager(res2.data.venueManager);
+        if (!userName) throw new Error("User data not found in cookie");
+        const [venueRes, profileRes] = await Promise.all([
+          getAllVenueByProfile(userName),
+          getProfiles(userName),
+        ]);
+        setVenues(venueRes.data);
+        setIVenueManager(profileRes.data.venueManager);
       } catch (err) {
         console.log(err);
       }
     };
-
-    myVenues();
+    fetchVenues();
   }, [userName]);
 
   const handleEditClick = (venueId) => {
     setSelectedVenueId(venueId);
     const modal = document.getElementById("my_modal_2");
-    if (modal) {
-      modal.showModal();
-    }
+    modal && modal.showModal();
+  };
+
+  const { removeVenue } = useDeleteVenue(selectedVenueId);
+
+  const handleDelete = (venueId) => {
+    setSelectedVenueId(venueId);
+    console.log("Venue deleted", venueId);
+    removeVenue(venueId);
+    setTimeout(() => window.location.reload(), 1200);
   };
 
   return (
@@ -49,22 +55,40 @@ export default function MyVenues() {
             venues.map((venue) => (
               <div key={venue.id}>
                 {venue.name}
-                {iVenueManager ? (
+                <div
+                  className="tooltip"
+                  data-tip={
+                    iVenueManager
+                      ? null
+                      : "Register as a Venue Manager to continue."
+                  }
+                >
                   <Button
                     value={selectedVenueId}
                     venueid={selectedVenueId}
                     onClick={() => handleEditClick(venue.id)}
+                    disabled={!iVenueManager}
                   >
                     Edit
                   </Button>
-                ) : (
-                  <div
-                    className="tooltip "
-                    data-tip="Register as a Venue Manager to continue."
+                </div>
+
+                <div
+                  className="tooltip"
+                  data-tip={
+                    iVenueManager
+                      ? null
+                      : "Register as a Venue Manager to continue."
+                  }
+                >
+                  <Button
+                    className="hover:bg-red-500"
+                    onClick={() => handleDelete(venue.id)}
+                    disabled={!iVenueManager}
                   >
-                    <Button className="btn">Edit</Button>
-                  </div>
-                )}
+                    Delete venue
+                  </Button>
+                </div>
               </div>
             ))}
         </div>
