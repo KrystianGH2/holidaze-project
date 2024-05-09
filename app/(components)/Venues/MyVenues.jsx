@@ -1,13 +1,11 @@
 "use client";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { getAllVenueByProfile } from "@/lib/api";
+import { getAllVenueByProfile, getProfiles } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import UpdateVenue from "../Modal/UpdateVenue/UpdateVenue";
-import { useAuth } from "@/app/Context/AuthContext";
 
 export default function MyVenues() {
-  const { isVenueManager } = useAuth();
   const userDataFromCookie = Cookies.get("userData");
   const parsedUserData = userDataFromCookie
     ? JSON.parse(userDataFromCookie)
@@ -15,6 +13,7 @@ export default function MyVenues() {
   const userName = parsedUserData ? parsedUserData.name : null;
   const [venues, setVenues] = useState(null);
   const [selectedVenueId, setSelectedVenueId] = useState(null);
+  const [iVenueManager, setIVenueManager] = useState(null);
 
   useEffect(() => {
     const myVenues = async () => {
@@ -24,6 +23,8 @@ export default function MyVenues() {
         }
         const res = await getAllVenueByProfile(userName);
         setVenues(res.data);
+        const res2 = await getProfiles(userName);
+        setIVenueManager(res2.data.venueManager);
       } catch (err) {
         console.log(err);
       }
@@ -48,7 +49,7 @@ export default function MyVenues() {
             venues.map((venue) => (
               <div key={venue.id}>
                 {venue.name}
-                {isVenueManager ? (
+                {iVenueManager ? (
                   <Button
                     value={selectedVenueId}
                     venueid={selectedVenueId}
@@ -58,12 +59,10 @@ export default function MyVenues() {
                   </Button>
                 ) : (
                   <div
-                    className="tooltip tooltip-error"
+                    className="tooltip "
                     data-tip="Register as a Venue Manager to continue."
                   >
-                    <button disabled={true} className="btn btn-error">
-                      Edit
-                    </button>
+                    <Button className="btn">Edit</Button>
                   </div>
                 )}
               </div>

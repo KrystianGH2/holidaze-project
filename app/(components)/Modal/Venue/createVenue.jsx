@@ -13,6 +13,7 @@ export default function CreateVenue() {
     isLoggedIn,
     redirectUser,
     message,
+    iVenueManager,
   } = useVenueLogic();
 
   return (
@@ -262,10 +263,24 @@ export default function CreateVenue() {
                       )}
                     </div>
                   </section>
-
-                  <Button variant="secondary" type="submit">
-                    Create Venue
-                  </Button>
+                  {iVenueManager ? (
+                    <Button variant="secondary" type="submit">
+                      Create Venue
+                    </Button>
+                  ) : (
+                    <div
+                      className="tooltip "
+                      data-tip="Register as a Venue Manager to continue."
+                    >
+                      <Button
+                        disabled
+                        variant="secondary"
+                        className=" text-black cursor-not-allowed"
+                      >
+                        Create Venue
+                      </Button>
+                    </div>
+                  )}
                 </form>
               </div>
               <p className="py-4">Press ESC key or click outside to Cancel</p>
