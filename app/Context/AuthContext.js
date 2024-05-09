@@ -9,45 +9,52 @@ const AuthContext = createContext({
     message: "",
     userData: null,
     isLoggedIn: null,
-    isVenueManager: null
+    isUserVenueManager: false,
 });
 
 export const AuthProvider = ({ children }) => {
-    const router= useRouter()
+    const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userData, setUserData] = useState(null);
-    const [message, setMessage] = useState("Please Log in to continue.")
-    const [isVenueManager, setIsVenueManager] = useState(null);
+    const [message, setMessage] = useState("Please Log in to continue.");
+    const [isUserVenueManager, setIsUserVenueManager] = useState(false);
 
     useEffect(() => {
         const userDataFromCookie = Cookies.get("userData");
         if (userDataFromCookie) {
-            const parsedUserData = JSON.parse(userDataFromCookie);
             setIsLoggedIn(true);
-            if (isLoggedIn) {
-                const getUserData = async () => {
-                    try {
-                        const responseData = await getProfiles(parsedUserData.name);
-                        const data = await responseData.json();
-                        setUserData(data.data);
-                        setIsVenueManager(data.data.venueManager); 
-                    } catch (e) {
-                        console.log(e);
-                    }
-                };
-                getUserData();
-            }
         } else {
             setIsLoggedIn(false);
         }
-    }, [router, isLoggedIn, isVenueManager]); 
+    }, []);
+
+    useEffect(() => {
+        if (!isLoggedIn) return;
+
+        const getUserData = async () => {
+            try {
+                const userDataFromCookie = Cookies.get("userData");
+                if (userDataFromCookie) {
+                    const parsedUserData = JSON.parse(userDataFromCookie);
+                    const responseData = await getProfiles(parsedUserData.name);
+                    const data = await responseData;
+                    setUserData(data.data);
+                    setIsUserVenueManager(data.data.venueManager); 
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        };
+
+        getUserData();
+    }, [isLoggedIn, isUserVenueManager]); 
 
     const redirectUser = () => {
         router.push("/Login");
     }
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, redirectUser, message, userData, isVenueManager }}>
+        <AuthContext.Provider value={{ isLoggedIn, redirectUser, message, userData, isUserVenueManager }}>
             {children}
         </AuthContext.Provider>
     );

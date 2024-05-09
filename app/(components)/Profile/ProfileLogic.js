@@ -29,8 +29,8 @@ export const useProfileLogic = () => {
           throw new Error("User data not found in cookie");
         }
         const res = await getProfiles(userName);
-        if (res.ok) {
-          const data = await res.json();
+        if (res) {
+          const data = await res;
           setUserInfo(data.data);
         } else {
           throw new Error("Failed to fetch profiles");
