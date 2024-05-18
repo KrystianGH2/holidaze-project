@@ -22,17 +22,27 @@ import "react-day-picker/dist/style.css";
 import { createBooking } from "@/lib/api";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { useStore } from "@/lib/useStore";
 
-function DatePickerWithRange({ className, venueId, bookings }) {
+function DatePickerWithRange({ className, venueId, bookings, price }) {
   const initialRange = {
     from: new Date(),
     to: addDays(new Date(), 1),
   };
 
+  const { currentGuests, increaseGuests, decreaseGuests } = useStore(
+    (state) => ({
+      currentGuests: state.currentGuests,
+      increaseGuests: state.increaseGuests,
+      decreaseGuests: state.decreaseGuests,
+    })
+  );
+
   const { toast } = useToast();
   const [range, setRange] = useState(initialRange);
-  const [numberOfGuests, setNumberOfGuests] = useState(2);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [pricePerNight, setPricePerNight] = useState(price);
+  const [nights, setNights] = useState(1);
 
   const { register, handleSubmit, setValue } = useForm();
 
@@ -49,13 +59,13 @@ function DatePickerWithRange({ className, venueId, bookings }) {
       if (!res || res.errors) {
         const errorMessage =
           res.errors[0]?.message || "Failed to create booking";
+        setErrorMessage(errorMessage);
         return toast({
           title: "Something went wrong!",
           description: errorMessage,
           action: <ToastAction altText="Close">Close</ToastAction>,
           variant: "destructive",
         });
-        setErrorMessage(errorMessage);
       }
 
       toast({
@@ -79,7 +89,15 @@ function DatePickerWithRange({ className, venueId, bookings }) {
     if (range?.to && isValid(range.to)) {
       setValue("dateTo", format(range.to, "yyyy-MM-dd"));
     }
-  }, [range, setValue]);
+
+    // Calculate the number of nights between the selected dates
+    const calculatedNights =
+      range?.from && range?.to
+        ? Math.ceil((range.to - range.from) / (1000 * 60 * 60 * 24))
+        : 0;
+    setNights(calculatedNights);
+    setPricePerNight(calculatedNights * price);
+  }, [range, setValue, price]);
 
   // Disable dates before range.from and already booked dates
   const disabledDates = (date) => {
@@ -93,8 +111,8 @@ function DatePickerWithRange({ className, venueId, bookings }) {
     });
   };
 
-  const handleNumberOfGuests = (e) => {
-    setNumberOfGuests(Number(e.target.value));
+  const disabledDecreaseButton = () => {
+    return currentGuests <= 1;
   };
 
   return (
@@ -135,11 +153,7 @@ function DatePickerWithRange({ className, venueId, bookings }) {
               />
             </PopoverContent>
           </Popover>
-          {
-            errorMessage && (
-              <p className="text-red-500">{errorMessage}</p>
-            )
-          }
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </div>
         <input
           type="hidden"
@@ -157,18 +171,37 @@ function DatePickerWithRange({ className, venueId, bookings }) {
             range?.to && isValid(range.to) ? format(range.to, "yyyy-MM-dd") : ""
           }
         />
+        <Button
+          type="button"
+          onClick={decreaseGuests}
+          disabled={disabledDecreaseButton()}
+        >
+          {" "}
+          -{" "}
+        </Button>
         <input
           {...register("guests", { valueAsNumber: true })}
-          type="number"
           id="guests"
-          value={numberOfGuests}
-          onChange={handleNumberOfGuests}
+          value={currentGuests}
           className="border border-gray-300 rounded p-2"
           min="1"
         />
+        <Button type="button" onClick={increaseGuests}>
+          {" "}
+          +{" "}
+        </Button>
         <input type="hidden" {...register("venueId")} value={venueId} />
         <Button type="submit">Submit</Button>
       </form>
+      <p className="text-gray-500 text-base">
+        {pricePerNight
+          ? `${
+              nights === 1
+                ? `NOK ${pricePerNight} for 1 night`
+                : `NOK ${pricePerNight} for ${nights} nights`
+            }`
+          : ""}
+      </p>
     </>
   );
 }
