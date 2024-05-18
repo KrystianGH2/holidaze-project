@@ -12,7 +12,7 @@ export default function VenuePage({ params }) {
     const fetchVenue = async () => {
       try {
         const venue = await getVenueById(id);
-        // console.log(venue);
+        console.log(venue);
         setVenue(venue.data);
         setBookings(venue.data.bookings);
       } catch (err) {
@@ -31,8 +31,13 @@ export default function VenuePage({ params }) {
         <img src={venue.media[0].url} alt={venue.media[0].alt} />
       )}
       <p>{venue?.description}</p>
+      <p> {venue?.price} NOK per Night </p>
       {venue && bookings && (
-        <DatePickerWithRange venueId={venue.id} bookings={bookings} />
+        <DatePickerWithRange
+          venueId={venue.id}
+          bookings={bookings}
+          price={venue?.price}
+        />
       )}
     </div>
   );
