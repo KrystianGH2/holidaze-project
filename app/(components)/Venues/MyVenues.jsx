@@ -5,6 +5,7 @@ import { getAllVenueByProfile, getProfiles } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import UpdateVenue from "../Modal/UpdateVenue/UpdateVenue";
 import useDeleteVenue from "../Modal/DeleteVenue/useDeleteVenue";
+import BookingDetails from "../BookingDetails";
 export default function MyVenues() {
   const userDataFromCookie = Cookies.get("userData");
   const userName = userDataFromCookie
@@ -54,7 +55,7 @@ export default function MyVenues() {
           {venues &&
             venues.map((venue) => (
               <div key={venue.id}>
-                {venue.name}
+                {venue.name} <p>Number of bookings: {venue.bookings.length}</p>
                 <div
                   className="tooltip"
                   data-tip={
@@ -72,7 +73,6 @@ export default function MyVenues() {
                     Edit
                   </Button>
                 </div>
-
                 <div
                   className="tooltip"
                   data-tip={
@@ -89,6 +89,13 @@ export default function MyVenues() {
                     Delete venue
                   </Button>
                 </div>
+                {venue.bookings.length <= 0 ? (
+                  ""
+                ) : (
+                  <>
+                    <BookingDetails bookings={venue.bookings} />
+                  </>
+                )}
               </div>
             ))}
         </div>
