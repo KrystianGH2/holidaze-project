@@ -14,6 +14,7 @@ export default function MyBookings() {
     : null;
   const userName = parsedUserData ? parsedUserData.name : null;
   const [userBookings, setUserBookings] = useState(null);
+  const [selectedBookingId, setSelectedBookingId] = useState(null);
 
   useEffect(() => {
     const fetchUserBookings = async () => {
