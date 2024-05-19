@@ -23,8 +23,10 @@ import { createBooking } from "@/lib/api";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/useStore";
+import { useAuth } from "../Context/AuthContext";
 
 function DatePickerWithRange({ className, venueId, bookings, price }) {
+  const { isLoggedIn } = useAuth();
   const initialRange = {
     from: new Date(),
     to: addDays(new Date(), 1),
@@ -47,6 +49,16 @@ function DatePickerWithRange({ className, venueId, bookings, price }) {
   const { register, handleSubmit, setValue } = useForm();
 
   const onSubmit = async (data) => {
+    if (!isLoggedIn) {
+      return toast({
+        title: "You need to be logged in!",
+        duration: 2200,
+        description: "Please log in to create a booking.",
+        action: <ToastAction altText="Close">Close</ToastAction>,
+        variant: "destructive",
+      });
+    }
+
     const bookingData = {
       ...data,
       guests: Number(data.guests), // Ensure guests is sent as a number
@@ -55,7 +67,6 @@ function DatePickerWithRange({ className, venueId, bookings, price }) {
 
     try {
       const res = await createBooking(bookingData);
-
       if (!res || res.errors) {
         const errorMessage =
           res.errors[0]?.message || "Failed to create booking";
@@ -191,7 +202,9 @@ function DatePickerWithRange({ className, venueId, bookings, price }) {
           +{" "}
         </Button>
         <input type="hidden" {...register("venueId")} value={venueId} />
-        <Button type="submit">Submit</Button>
+        <Button variant="secondary" type="submit">
+          Submit
+        </Button>
       </form>
       <p className="text-gray-500 text-base">
         {pricePerNight
