@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { getVenueById } from "@/lib/api";
 import DatePickerWithRange from "@/app/(components)/Calendar";
+import { AuthProvider } from "@/app/Context/AuthContext";
 
 export default function VenuePage({ params }) {
   const id = params.id;
@@ -33,11 +34,13 @@ export default function VenuePage({ params }) {
       <p>{venue?.description}</p>
       <p> {venue?.price} NOK per Night </p>
       {venue && bookings && (
-        <DatePickerWithRange
-          venueId={venue.id}
-          bookings={bookings}
-          price={venue?.price}
-        />
+        <AuthProvider>
+          <DatePickerWithRange
+            venueId={venue.id}
+            bookings={bookings}
+            price={venue?.price}
+          />
+        </AuthProvider>
       )}
     </div>
   );
