@@ -89,7 +89,7 @@ export default function Venues() {
   return (
     <>
       <main className="flex justify-start items-start flex-row gap-4 w-full max-w-7xl lg:px-8 px-4 ">
-        <section className="border p-4  flex-col justify-start gap-3 hidden md:flex">
+        <section className="border p-4 w-full max-w-[350px] flex-col justify-start gap-3 hidden md:flex ">
           <h1>Filter By:</h1>
 
           <div>
@@ -103,7 +103,7 @@ export default function Venues() {
               <option value="desc">Price High to Low</option>
             </select>
           </div>
-          <div className="flex flex-col gap-4 ">
+          <div className="flex flex-col gap-4 py-4">
             <h2>Popular filters</h2>
             <label className="flex flex-row justify-start items-center gap-2 text-sm">
               <input
@@ -147,8 +147,8 @@ export default function Venues() {
             </label>
           </div>
 
-          <div className="flex flex-col gap-4 ">
-            <div className="flex flex-col gap-1 ">
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-center items-start flex-col gap-2 ">
               <h2>Your budget (per night)</h2>
               <p className="text-xs flex justify-center">
                 NOK 100 - NOK {filters.price}
@@ -166,16 +166,19 @@ export default function Venues() {
           </div>
         </section>
 
-        <section>
-          <div className="flex flex-col w-full justify-center items-center gap-4">
+        <div className="flex w-full flex-col  gap-20">
+          <div className="flex flex-col w-full justify-center items-start gap-4">
             {filteredVenues.length > 0 ? (
               filteredVenues.map((venue) => {
                 return (
-                  <div key={venue.id} className=" w-full border rounded-sm">
+                  <div
+                    key={venue.id}
+                    className=" w-full max-w-3xl border rounded-sm"
+                  >
                     <Link href={`/Venue/${venue.id}`}>
                       <div
-                        className="p-2 h-48 bg-gray-500 shadow-xl rounded-none
-                       justify-between flex overflow-hidden gap-5 flex-row w-full"
+                        className="p-2 bg-gray-500 shadow-xl rounded-none
+                       justify-between flex overflow-hidden gap-5 flex-row w-full max-w-3xl"
                       >
                         <div className="flex flex-row">
                           <figure className="w-[260px]">
@@ -186,10 +189,10 @@ export default function Venues() {
                             />
                           </figure>
 
-                          <div className="flex flex-col justify-between">
+                          <div className="flex flex-col justify-between ">
                             <div className="card-body flex flex-col justify-between w-full p-4 overflow-hidden">
                               <div className="flex flex-col ">
-                                <h2 className="card-title text-xl font-semibold whitespace-wrap text-ellipsis">
+                                <h2 className="card-title text-xl font-semibold">
                                   {venue.name.charAt(0).toUpperCase() +
                                     venue.name.slice(1)}
                                 </h2>
@@ -259,7 +262,7 @@ export default function Venues() {
             currentPage={metaCurrentPage}
             totalPages={totalPages}
           />
-        </section>
+        </div>
       </main>
     </>
   );
