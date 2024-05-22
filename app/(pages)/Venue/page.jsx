@@ -1,14 +1,13 @@
 import React from "react";
 import Venues from "@/app/(components)/Venues/Venues";
-import { AuthProvider } from "@/app/Context/AuthContext";
-import CreateVenue from "@/app/(components)/Modal/Venue/createVenue";
+
 export default function page() {
   return (
-    <div>
-      <AuthProvider>
-        <CreateVenue />
-      </AuthProvider>
+    <main className="flex min-h-screen flex-col items-center justify-between w-full py-24">
+      <div className="flex justify-center items-center w-full max-w-7xl">
+
       <Venues />
-    </div>
+      </div>
+    </main>
   );
 }
