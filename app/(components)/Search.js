@@ -32,11 +32,11 @@ export default function Search({className}) {
 
   return (
     <>
-      <form className='flex w-full justify-center items-center text-black max-w-7xl lg:px-8'>
+      <form className='flex w-full justify-center items-center text-black max-w-7xl lg:px-6'>
         <section className='flex flex-row w-full justify-center items-center gap-1 p-2'>
 
        
-        <div className='flex-1 max-w-xl'>
+        <div className='flex w-full max-w-xl'>
           <Input placeholder="Search your destination..." 
            type="text" value={query}
             onChange={(e) => setQuery(e.target.value)} 
@@ -45,14 +45,14 @@ export default function Search({className}) {
             />
         </div>
 
-          <div className={cn("grid gap-2 ", className)}>
+          <div className={cn("grid gap-2 w-full ", className)}>
             <Popover>
         <PopoverTrigger asChild>
           <Button
             id="date"
             variant={"secondary"}
             className={cn(
-              "max-w-[500px] w-full flex  justify-start text-left font-normal h-[45px]",
+              " w-full  flex  justify-start text-left font-normal h-[45px]",
               !date && "text-muted-foreground"
             )}
           >
