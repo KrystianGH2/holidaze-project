@@ -15,7 +15,7 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
     const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState({});
     const [message, setMessage] = useState("Please Log in to continue.");
     const [isUserVenueManager, setIsUserVenueManager] = useState(false);
 
