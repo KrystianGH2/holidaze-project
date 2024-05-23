@@ -32,11 +32,11 @@ export default function Search({className}) {
 
   return (
     <>
-      <form className='flex w-full justify-center items-center text-black max-w-7xl lg:px-6'>
-        <section className='flex flex-row w-full justify-center items-center gap-1 p-2'>
+      <form className='flex w-full justify-center items-center text-black max-w-7xl lg:px-6 py-6 px-2'>
+        <section className='flex flex-col w-full justify-center items-center  gap-1 p-2 md:flex-row'>
 
        
-        <div className='flex w-full max-w-xl'>
+        <div className='flex w-full md:max-w-xl'>
           <Input placeholder="Search your destination..." 
            type="text" value={query}
             onChange={(e) => setQuery(e.target.value)} 
@@ -85,7 +85,7 @@ export default function Search({className}) {
           </div>
         <Button 
           variant="secondary"
-          className='btn disabled:bg-white  w-full max-w-[300px] min-h-[45px] text-black'
+          className='btn disabled:bg-white  w-full md:max-w-[300px] min-h-[45px] text-black'
           disabled={isInputEmpty()}
           type="submit" onClick={handleOnSearch}>Search</Button>
  </section>
