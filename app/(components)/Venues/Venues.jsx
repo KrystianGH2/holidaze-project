@@ -88,8 +88,8 @@ export default function Venues() {
 
   return (
     <>
-      <main className="flex justify-start items-start flex-row gap-4 w-full max-w-7xl lg:px-8 px-4 ">
-        <section className="border p-4 w-full max-w-[350px] flex-col justify-start gap-3 hidden md:flex ">
+      <main className="flex justify-start items-start flex-row gap-4 w-full max-w-7xl lg:px-8 px-4">
+        <section className="border p-4 w-full max-w-[350px] flex-col justify-start gap-3 hidden md:flex">
           <h1>Filter By:</h1>
 
           <div>
@@ -148,11 +148,11 @@ export default function Venues() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <div className="flex justify-center items-start flex-col gap-2 ">
+            <div className="flex justify-center items-start flex-col gap-2">
               <h2>Your budget (per night)</h2>
               <p className="text-xs flex justify-center">
                 NOK 100 - NOK {filters.price}
-              </p>{" "}
+              </p>
             </div>
             <input
               type="range"
@@ -166,14 +166,14 @@ export default function Venues() {
           </div>
         </section>
 
-        <div className="flex w-full flex-col  gap-20">
+        <div className="flex w-full flex-col gap-20">
           <div className="flex flex-col w-full justify-center items-start gap-4">
-            {filteredVenues.length > 0 ? (
-              filteredVenues.map((venue) => {
+            {sortedVenues.length > 0 ? (
+              sortedVenues.map((venue) => {
                 return (
                   <div
                     key={venue.id}
-                    className=" w-full max-w-3xl border rounded-sm"
+                    className="w-full max-w-3xl border rounded-sm"
                   >
                     <Link href={`/Venue/${venue.id}`}>
                       <div
@@ -189,9 +189,9 @@ export default function Venues() {
                             />
                           </figure>
 
-                          <div className="flex flex-col justify-between ">
+                          <div className="flex flex-col justify-between">
                             <div className="card-body flex flex-col justify-between w-full p-4 overflow-hidden">
-                              <div className="flex flex-col ">
+                              <div className="flex flex-col">
                                 <h2 className="card-title text-xl font-semibold">
                                   {venue.name.charAt(0).toUpperCase() +
                                     venue.name.slice(1)}
@@ -208,7 +208,7 @@ export default function Venues() {
                                       d="M8 1.75a.75.75 0 0 1 .692.462l1.41 3.393 3.664.293a.75.75 0 0 1 .428 1.317l-2.791 2.39.853 3.575a.75.75 0 0 1-1.12.814L7.998 12.08l-3.135 1.915a.75.75 0 0 1-1.12-.814l.852-3.574-2.79-2.39a.75.75 0 0 1 .427-1.318l3.663-.293 1.41-3.393A.75.75 0 0 1 8 1.75Z"
                                       clipRule="evenodd"
                                     />
-                                  </svg>{" "}
+                                  </svg>
                                   <p>{venue.rating}</p>
                                 </small>
                               </div>
@@ -220,7 +220,6 @@ export default function Venues() {
                               </span>
                             </div>
                             <div className="pl-4 flex flex-row gap-1 text-[12px] font-normal">
-                              {" "}
                               <p>{venue.meta.wifi ? "Wifi " : ""}</p>
                               <p>{venue.meta.parking ? "Parking" : ""}</p>
                               <p>{venue.meta.breakfast ? "Breakfast " : ""}</p>
@@ -231,7 +230,6 @@ export default function Venues() {
 
                         <div className="card-actions flex flex-col justify-end items-end">
                           <small className="text-gray-300">
-                            {" "}
                             Max guests {venue.maxGuests}
                           </small>
                           <p>
