@@ -88,8 +88,8 @@ export default function Venues() {
 
   return (
     <>
-      <main className="flex justify-start items-start flex-row gap-4 w-full max-w-7xl lg:px-8 px-4">
-        <section className="border p-4 w-full max-w-[350px] flex-col justify-start gap-3 hidden md:flex">
+      <main className="flex justify-start items-start flex-col md:flex-row gap-4 w-full max-w-7xl lg:px-8 px-4">
+        <section className="border rounded-md p-4 w-full md:max-w-[350px] flex-col justify-start gap-3 md:flex">
           <h1>Filter By:</h1>
 
           <div>
@@ -167,7 +167,7 @@ export default function Venues() {
         </section>
 
         <div className="flex w-full flex-col gap-20">
-          <div className="flex flex-col w-full justify-center items-start gap-4">
+          <div className="flex flex-col w-full justify-center items-center gap-4">
             {sortedVenues.length > 0 ? (
               sortedVenues.map((venue) => {
                 return (
@@ -248,7 +248,11 @@ export default function Venues() {
                 );
               })
             ) : (
-              <p>No venues found matching the selected filters.</p>
+              <>
+                <div className="flex justify-center items-center align-middle p-4 mt-6 border rounded-md">
+                  <p>No venues found matching the selected filters.</p>
+                </div>
+              </>
             )}
           </div>
 
