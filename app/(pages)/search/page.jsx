@@ -14,7 +14,7 @@ export default function SearchResultsPage() {
     breakfast: false,
     pets: false,
     price: 10000,
-    sortOrder: "asc", 
+    sortOrder: "",
   });
 
   useEffect(() => {
@@ -26,7 +26,11 @@ export default function SearchResultsPage() {
       if (q) {
         try {
           const responseData = await searchVenue(q);
-          setVenues(responseData.data || []);
+          // Returns only the Venues that contains the value of the query
+          const filteredVenues = responseData.data.filter((venue) =>
+            venue.name.toLowerCase().includes(q.toLowerCase())
+          );
+          setVenues(filteredVenues);
         } catch (error) {
           console.error("Error:", error);
         } finally {
@@ -37,7 +41,6 @@ export default function SearchResultsPage() {
 
     fetchData();
   }, []);
-
   const handleFilterChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFilters((prevFilters) => ({
@@ -59,15 +62,13 @@ export default function SearchResultsPage() {
   };
 
   const sortVenues = (venues) => {
-    const sortedVenues = [...venues];
-    sortedVenues.sort((a, b) => {
-      if (filters.sortOrder === "asc") {
-        return a.price - b.price;
-      } else {
-        return b.price - a.price;
-      }
-    });
-    return sortedVenues;
+    if (filters.sortOrder === "asc") {
+      return venues.sort((a, b) => a.price - b.price);
+    } else if (filters.sortOrder === "desc") {
+      return venues.sort((a, b) => b.price - a.price);
+    } else {
+      return venues; // Return unsorted venues if no sorting order specified
+    }
   };
 
   const filteredVenues = applyFilters(venues);
