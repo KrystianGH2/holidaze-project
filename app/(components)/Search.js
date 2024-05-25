@@ -52,7 +52,7 @@ export default function Search({className}) {
             id="date"
             variant={"secondary"}
             className={cn(
-              " w-full  flex  justify-start text-left font-normal h-[45px]",
+              " w-full  flex bg-white hover:bg-gray-100 text-black border justify-start text-left font-normal h-[45px]",
               !date && "text-muted-foreground"
             )}
           >
@@ -85,7 +85,7 @@ export default function Search({className}) {
           </div>
         <Button 
           variant="secondary"
-          className='btn disabled:bg-white  w-full md:max-w-[300px] min-h-[45px] text-black'
+          className='btn disabled:bg-gray-300 border-none disabled:text-black hover:cursor-pointer  w-full md:max-w-[300px] min-h-[45px] text-white'
           disabled={isInputEmpty()}
           type="submit" onClick={handleOnSearch}>Search</Button>
  </section>
