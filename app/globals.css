@@ -92,3 +92,7 @@
   .modal-backdrop{
     background-color: rgba(0, 0, 0, 0.5);
   }
+
+    .no-border-bottom {
+      border-bottom: none;
+    }
