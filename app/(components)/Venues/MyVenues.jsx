@@ -61,18 +61,9 @@ export default function MyVenues() {
 
   return (
     <>
-      <style jsx>{`
-        .no-border-bottom {
-          border-bottom: none;
-        }
-        .hover-transparent:hover {
-          background-color: transparent;
-        }
-      `}</style>
-
       <section className="flex w-full justify-center items-center max-w-5xl">
         <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
+          <TableCaption>A list of your Venues.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>

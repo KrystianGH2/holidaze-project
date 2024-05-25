@@ -19,7 +19,7 @@ export default function page() {
           </div>{" "}
         </section>
         <section className="flex flex-col justify-center items-start p-4 w-full max-w-7xl">
-          <h1 className="text-4xl py-4 lg:px-4 font-bold">My Venues</h1>
+          <h1 className="text-4xl py-4 font-bold">My Venues</h1>
           <section className="flex flex-col justify-center item-center w-full">
             <MyVenues />
           </section>
