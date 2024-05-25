@@ -24,6 +24,7 @@ export default function MyVenues() {
           getAllVenueByProfile(userName),
           getProfiles(userName),
         ]);
+        console.log(venueRes.data);
         setVenues(venueRes.data);
         setIVenueManager(profileRes.data.venueManager);
       } catch (err) {
@@ -50,8 +51,8 @@ export default function MyVenues() {
 
   return (
     <>
-      <section>
-        <div>
+      <section className="flex w-full justify-center items-center ">
+        <div className="flex flex-col w-full max-w-[1220px]">
           {venues &&
             venues.map((venue) => (
               <div key={venue.id}>
