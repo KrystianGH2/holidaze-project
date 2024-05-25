@@ -1,13 +1,21 @@
 "use client";
 import { useState, useEffect } from "react";
-import { usersBookings } from "@/lib/api";
+import { usersBookings, deleteBooking } from "@/lib/api";
 import Cookies from "js-cookie";
-import { deleteBooking } from "@/lib/api";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function MyBookings() {
+  const { toast } = useToast();
   const userDataFromCookie = Cookies.get("userData");
   const parsedUserData = userDataFromCookie
     ? JSON.parse(userDataFromCookie)
@@ -20,15 +28,30 @@ export default function MyBookings() {
     const fetchUserBookings = async () => {
       const response = await usersBookings(userName);
       setUserBookings(response.data);
+      console.log(response.data);
     };
     fetchUserBookings();
   }, [userName]);
 
-  const handleDelete = (bookingId) => {
+  const handleDelete = async (bookingId) => {
     setSelectedBookingId(bookingId);
-    console.log("Booking deleted", bookingId);
-    deleteBooking(bookingId);
-    setTimeout(() => window.location.reload(), 1000);
+    try {
+      await deleteBooking(bookingId);
+      toast({
+        title: "Booking Deleted!",
+        variant: "destructive",
+      });
+      setUserBookings((prev) =>
+        prev.filter((booking) => booking.id !== bookingId)
+      );
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "There was an error deleting the booking.",
+        variant: "destructive",
+      });
+      console.error("Failed to delete booking:", error);
+    }
   };
 
   const formatDate = (isoString) => {
@@ -39,18 +62,43 @@ export default function MyBookings() {
 
   return (
     <>
-      <h1>My Bookings</h1>
-      {userBookings &&
-        userBookings.map((booking) => (
-          <div key={booking.id}>
-            <h1>{booking.id}</h1>
-            <h1>{formatDate(booking.dateFrom)}</h1>
-            <h1>{formatDate(booking.dateTo)}</h1>
-            <h1>{booking.guests}</h1>
+      <section className="flex w-full justify-center items-center max-w-5xl">
+        <Table>
+          <TableCaption>Your Bookings</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Venue name</TableHead>
+              <TableHead>From</TableHead>
+              <TableHead>To</TableHead>
+              <TableHead className="text-center">Guests</TableHead>
+              <TableHead className="text-center">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {userBookings?.map((booking) => (
+              <TableRow key={booking.id} className="hover-transparent">
+                <TableCell>
+                  {booking.venue.name.charAt(0).toUpperCase() +
+                    booking.venue.name.slice(1)}
+                </TableCell>
 
-            <button onClick={() => handleDelete(booking.id)}>Delete</button>
-          </div>
-        ))}
+                <TableCell>{formatDate(booking.dateFrom)}</TableCell>
+                <TableCell>{formatDate(booking.dateTo)}</TableCell>
+                <TableCell className="text-center">{booking.guests}</TableCell>
+                <TableCell className="flex justify-center">
+                  <Button
+                    variant="secondary"
+                    onClick={() => handleDelete(booking.id)}
+                    className="hover:bg-red-500"
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </section>
     </>
   );
 }
