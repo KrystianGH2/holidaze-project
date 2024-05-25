@@ -98,8 +98,8 @@ export default function VenuePage({ params }) {
                   </p>
                 </div>
               </div>
-              <div className="flex w-full justify-start items-start flex-col-reverse sm:pt-10 gap-4 md:flex-row h-[400px] md:h-[500px]">
-                <div className="flex w-full h-full max-w-[800px]">
+              <div className="flex w-full justify-start items-start flex-col-reverse  gap-4 md:flex-row md:h-[500px]">
+                <div className="flex w-full md:h-full max-w-[800px] h-[500px]">
                   {venue?.media && (
                     <img
                       className="w-full  h-full object-cover"
@@ -109,14 +109,14 @@ export default function VenuePage({ params }) {
                   )}
                 </div>
 
-                <section className="flex w-full flex-col justify-center items-end md:max-w-[300px] p-4 rounded border gap-2">
+                <section className="flex w-full flex-col justify-center items-end md:max-w-[300px] p-4 rounded border md:gap-1">
                   <div className="flex flex-col py-2 gap-1">
-                    <div className="flex flex-row">
+                    <div className="flex flex-row gap-2">
                       <Rating
                         style={{ maxWidth: 80, paddingTop: "12px" }}
                         value={rating}
                       />
-                      <p className="p-1  bg-blue-500 rounded h-auto">
+                      <p className="p-1  bg-blue-500  rounded-r-lg rounded-t-md h-auto px-3">
                         {venue.rating}
                       </p>
                     </div>

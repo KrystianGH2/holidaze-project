@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import RedirectModal from "../redirectModal";
 import useVenueLogic from "./createVenueLogic";
+import { GoPlusCircle } from "react-icons/go";
 export default function CreateVenue() {
   const {
     handleSubmit,
@@ -21,10 +22,15 @@ export default function CreateVenue() {
       {" "}
       {isLoggedIn ? (
         <Button
+          variant="secondary"
           className="btn"
           onClick={() => document.getElementById("my_modal_2").showModal()}
         >
-          Create a Venue
+          <span className="flex flex-row justify-center items-center gap-2">
+            <GoPlusCircle className="text-2xl" />
+
+            <p>Create a Venue</p>
+          </span>
         </Button>
       ) : (
         <Button

@@ -18,7 +18,7 @@ export default function BookingDetails({ bookings }) {
 
   return (
     <>
-      <div className="collapse bg-base-200 max-w-2xl">
+      <div className="collapse bg-base-200">
         <input type="checkbox" />
         <div className="collapse-title text-base font-medium">
           Upcoming Bookings
@@ -41,7 +41,9 @@ export default function BookingDetails({ bookings }) {
                     {formatDate(booking.dateFrom)}
                   </TableCell>
                   <TableCell>{formatDate(booking.dateTo)}</TableCell>
-                  <TableCell>{booking.guests}</TableCell>
+                  <TableCell className="flex justify-center">
+                    {booking.guests}
+                  </TableCell>
                   <TableCell>{booking.customer.name}</TableCell>
                 </TableRow>
               ))}
