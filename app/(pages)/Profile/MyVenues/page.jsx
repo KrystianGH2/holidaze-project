@@ -5,7 +5,7 @@ export default function page() {
   return (
     <>
       <main className="flex flex-col justify-center items-center w-full ">
-        <section className="flex w-full max-w-7xl justify-start lg:px-8  px-4">
+        <section className="flex w-full max-w-7xl justify-start  px-4">
           <div className="text-sm breadcrumbs">
             <ul>
               <li>

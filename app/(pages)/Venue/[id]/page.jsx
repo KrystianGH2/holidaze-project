@@ -98,7 +98,7 @@ export default function VenuePage({ params }) {
                   </p>
                 </div>
               </div>
-              <div className="flex w-full justify-start items-start flex-col-reverse sm:pt-10 gap-4 md:flex-row md:h-[500px]">
+              <div className="flex w-full justify-start items-start flex-col-reverse  gap-4 md:flex-row md:h-[500px]">
                 <div className="flex w-full md:h-full max-w-[800px] h-[500px]">
                   {venue?.media && (
                     <img

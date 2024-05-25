@@ -9,7 +9,7 @@ export default function ProfilePage() {
   const { isUserVenueManager } = useAuth();
   return (
     <>
-      <main className="flex flex-col justify-center items-center w-full">
+      <main className="flex flex-col justify-center items-center w-full gap-10">
         <Profile />
         {isUserVenueManager && (
           <>

@@ -20,7 +20,9 @@ import {
 
 export default function MyVenues() {
   const userDataFromCookie = Cookies.get("userData");
-  const userName = userDataFromCookie ? JSON.parse(userDataFromCookie).name : null;
+  const userName = userDataFromCookie
+    ? JSON.parse(userDataFromCookie).name
+    : null;
 
   const [venues, setVenues] = useState(null);
   const [selectedVenueId, setSelectedVenueId] = useState(null);
@@ -75,19 +77,30 @@ export default function MyVenues() {
           <TableBody>
             {venues?.map((venue) => (
               <React.Fragment key={venue.id}>
-                <TableRow className={`${venue.bookings.length > 0 ? 'no-border-bottom' : ''} hover-transparent`}>
+                <TableRow
+                  className={`${
+                    venue.bookings.length > 0 ? "no-border-bottom" : ""
+                  } hover-transparent`}
+                >
                   <TableCell className="font-medium">{venue.name}</TableCell>
-                  <TableCell className="flex justify-start">{venue.bookings.length}</TableCell>
+                  <TableCell className="flex justify-start">
+                    {venue.bookings.length}
+                  </TableCell>
                   <TableCell>
                     <div
                       className="tooltip"
-                      data-tip={iVenueManager ? null : "Register as a Venue Manager to continue."}
+                      data-tip={
+                        iVenueManager
+                          ? null
+                          : "Register as a Venue Manager to continue."
+                      }
                     >
                       <Button
                         value={selectedVenueId}
                         venueid={selectedVenueId}
                         onClick={() => handleEditClick(venue.id)}
                         disabled={!iVenueManager}
+                        variant="secondary"
                       >
                         Edit
                       </Button>
@@ -96,11 +109,17 @@ export default function MyVenues() {
                   <TableCell className="flex justify-center">
                     <div
                       className="tooltip"
-                      data-tip={iVenueManager ? null : "Register as a Venue Manager to continue."}
+                      data-tip={
+                        iVenueManager
+                          ? null
+                          : "Register as a Venue Manager to continue."
+                      }
                     >
                       <Button
+                        variant="secondary"
                         onClick={() => handleDelete(venue.id)}
                         disabled={!iVenueManager}
+                        className="hover:bg-red-500"
                       >
                         Delete venue
                       </Button>
