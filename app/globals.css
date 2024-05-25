@@ -36,7 +36,8 @@
     body {
       min-height: 100vh;
       line-height: 1.5;
-      color: white;
+      color: black;
+      background-color: white;
     }
   
     h1,
@@ -92,3 +93,7 @@
   .modal-backdrop{
     background-color: rgba(0, 0, 0, 0.5);
   }
+
+    .no-border-bottom {
+      border-bottom: none;
+    }
