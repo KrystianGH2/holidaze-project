@@ -3,7 +3,7 @@ import React from "react";
 export default function Footer() {
   return (
     <>
-      <main className="footer p-10  text-white flex justify-center items-center w-full mt-20">
+      <main className="footer p-10  text-white flex flex-col justify-center items-center w-full mt-20">
         <div className="flex w-full flex-col max-w-7xl">
           <footer className="footer p-10 bg-base-200 text-base-content">
             <nav>
@@ -47,6 +47,7 @@ export default function Footer() {
             </form>
           </footer>
         </div>
+        <p className="text-black">Made with ❤️ by KrystianGH2</p>
       </main>
     </>
   );
