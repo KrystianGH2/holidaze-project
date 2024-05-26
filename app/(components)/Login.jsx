@@ -79,43 +79,45 @@ export default function Login() {
   };
   return (
     <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col max-w-[400px] gap-4"
-      >
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Your email"
-            className="text-gray-700"
-            {...register("email", { required: true })}
-          />
-          {errors.email && (
-            <p className="text-red-500 text-xs">{errors.email.message}</p>
-          )}
-        </div>
+      <main className="flex justify-center items-center w-full">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col w-full max-w-[400px] gap-4"
+        >
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Your email"
+              className="text-gray-700"
+              {...register("email", { required: true })}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-xs">{errors.email.message}</p>
+            )}
+          </div>
 
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Your password"
-            className="text-gray-700"
-            {...register("password", { required: true })}
-          />
-          {errors.password && (
-            <p className="text-red-500 text-xs">{errors.password.message}</p>
-          )}
-        </div>
-        <Button variant="secondary" type="submit">
-          Login
-        </Button>
-      </form>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Your password"
+              className="text-gray-700"
+              {...register("password", { required: true })}
+            />
+            {errors.password && (
+              <p className="text-red-500 text-xs">{errors.password.message}</p>
+            )}
+          </div>
+          <Button variant="secondary" type="submit">
+            Login
+          </Button>
+        </form>
+      </main>
     </>
   );
 }
