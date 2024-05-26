@@ -65,7 +65,10 @@ export default function Login() {
         responseData.data.name.slice(1);
 
       setTimeout(() => {
-        router.push("/");
+        router.replace("/");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1800);
       }, 1500);
 
       return toast({
