@@ -9,9 +9,6 @@ import { MdOutlineEmojiFoodBeverage, MdPets } from "react-icons/md";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Button } from "@/components/ui/button";
-import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
 
 export default function VenuePage({ params }) {
   const id = params.id;
@@ -36,15 +33,6 @@ export default function VenuePage({ params }) {
 
     fetchVenue();
   }, [id]);
-
-  const markerIcon = new L.Icon({
-    iconUrl: require("leaflet/dist/images/marker-icon.png"),
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
-    shadowSize: [41, 41],
-  });
 
   return (
     <>
@@ -151,23 +139,11 @@ export default function VenuePage({ params }) {
                     </div>
                   </section>
 
-                  <div className="relative md:flex w-full  group overflow-hidden">
-                    <MapContainer
-                      className="opacity-40 relative"
-                      style={{ height: "287px", width: "100%" }}
-                      center={[59.9139, 10.7522]}
-                      zoom={8}
-                      scrollWheelZoom={false}
-                      zoomControl={false}
-                      dragging={false}
-                      doubleClickZoom={false}
-                    >
-                      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-                      <Marker position={[59.9139, 10.7522]} icon={markerIcon}>
-                        <Popup>{venue?.location?.address}</Popup>
-                      </Marker>
-                    </MapContainer>
+                  <div className="relative md:flex w-full  group">
+                    <img
+                      className="w-full h-[285px] object-cover opacity-60 md:max-w-[300px] group-hover:opacity-90 transition-opacity blur-0"
+                      src="https://i.imgur.com/uvkX4Yu.png"
+                    />
                     <Button
                       variant="secondary"
                       className="rounded-sm absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
