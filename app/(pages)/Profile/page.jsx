@@ -11,19 +11,25 @@ export default function ProfilePage() {
     <>
       <main className="flex flex-col justify-center items-center w-full gap-10">
         <Profile />
-        {isUserVenueManager && (
+        {isUserVenueManager ? (
           <>
-            <div className="flex flex-col gap-4 justify-center items-center border w-full max-w-[1220px] rounded-md py-4 border-gray-700">
+            <div className="flex flex-col gap-4 justify-center items-center border w-full max-w-[1220px] rounded-md py-4">
               <section>
                 <CreateVenue />
               </section>
-              <section>
-                <Link href={"/Profile/MyVenues"}>My Venues</Link>
-              </section>
-              <section>
-                <Link href={"/Profile/MyBookings"}>My Bookings</Link>
-              </section>{" "}
+              <div className="flex flex-col md:flex-row gap-3 justify-center items-center">
+                <section className="border p-2 rounded-md hover:bg-blue-100 cursor-pointer w-[120px] flex justify-center">
+                  <Link href={"/Profile/MyVenues"}>My Venues</Link>
+                </section>
+                <section className="border p-2 rounded-md hover:bg-blue-100 cursor-pointer  w-[120px] flex justify-center">
+                  <Link href={"/Profile/MyBookings"}>My Bookings</Link>
+                </section>{" "}
+              </div>
             </div>
+          </>
+        ) : (
+          <>
+            <p>Register as a venue manager to continue.</p>
           </>
         )}
       </main>

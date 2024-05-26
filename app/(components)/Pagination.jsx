@@ -7,6 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
 
 export function PaginationDemo({
   increasePage,
@@ -22,8 +23,8 @@ export function PaginationDemo({
         <PaginationItem>
           <button disabled={isFirstPage}>
             <PaginationPrevious
+              className="bg-blue-700 hover:bg-blue-800  hover:text-white text-white rounded"
               onClick={decreasePage}
-              className={"cursor-pointer"}
             />
           </button>
         </PaginationItem>
@@ -32,21 +33,21 @@ export function PaginationDemo({
             {currentPage}
           </PaginationLink>
         </PaginationItem>
-       
-      
+
         <PaginationItem>
           <PaginationEllipsis />
         </PaginationItem>
         <PaginationItem>
-          <PaginationLink >
-            {totalPages}
-          </PaginationLink>
+          <PaginationLink>{totalPages}</PaginationLink>
         </PaginationItem>
         <PaginationItem>
-          <button disabled={isLastPage}>
+          <button
+            className="bg-blue-700 hover:bg-blue-800 text-white rounded"
+            disabled={isLastPage}
+          >
             <PaginationNext
+              className="bg-blue-700 hover:bg-blue-800 hover:text-white cursor-pointer text-white rounded"
               onClick={increasePage}
-              className={"cursor-pointer"}
             />{" "}
           </button>
         </PaginationItem>

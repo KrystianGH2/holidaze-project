@@ -16,6 +16,9 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    daisyui: {
+    themes: ["light"],
+  },
     extend: {
       keyframes: {
         "accordion-down": {

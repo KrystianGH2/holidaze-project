@@ -30,7 +30,7 @@ export default function BookingDetails({ bookings }) {
               <TableRow>
                 <TableHead className="w-[100px]">From</TableHead>
                 <TableHead>To</TableHead>
-                <TableHead>Guests</TableHead>
+                <TableHead className="text-center">Guests</TableHead>
                 <TableHead>Customer</TableHead>
               </TableRow>
             </TableHeader>
@@ -41,7 +41,7 @@ export default function BookingDetails({ bookings }) {
                     {formatDate(booking.dateFrom)}
                   </TableCell>
                   <TableCell>{formatDate(booking.dateTo)}</TableCell>
-                  <TableCell className="flex justify-center">
+                  <TableCell className="text-center">
                     {booking.guests}
                   </TableCell>
                   <TableCell>{booking.customer.name}</TableCell>

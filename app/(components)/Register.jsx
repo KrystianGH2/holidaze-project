@@ -91,7 +91,7 @@ export default function Register() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col max-w-[400px] gap-4"
+        className="flex flex-col max-w-2xl gap-4 p-4 w-full"
       >
         <div className="flex flex-col gap-2">
           <Label htmlFor="name">Name</Label>
@@ -242,12 +242,16 @@ export default function Register() {
           </Button>
         )}
       </form>
-      <button
-        className="btn"
-        onClick={() => document.getElementById("my_modal_2").showModal()}
-      >
-        open modal
-      </button>
+
+      <div className="flex flex-col gap-2 pt-10 p-4">
+        <p className="text-xs text-center">
+          By signing in or creating an account, you agree with our Terms &
+          conditions and Privacy statement
+        </p>
+        <p className="text-xs text-center">
+          All rights reserved. Copyright (2024) - EasyTrips™
+        </p>
+      </div>
 
       <dialog id="my_modal_2" className="modal text-black">
         <div className="modal-box w-full h-[30%]  bg-white flex flex-col justify-center items-center">
