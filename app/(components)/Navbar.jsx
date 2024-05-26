@@ -17,8 +17,8 @@ const navigation = [
 
 const menuItems = [
   { name: "Profile", href: "/Profile" },
-  { name: "Venue", href: "/Profile/MyVenues" },
-  { name: "Bookings", href: "/Profile/MyBookings" },
+  { name: "Venue", href: "/Profile/MyVenues", requiresAuth: true },
+  { name: "Bookings", href: "/Profile/MyBookings", requiresAuth: true },
 ];
 
 function classNames(...classes) {
@@ -27,7 +27,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const { toggleOpen } = useStore();
-  const { isLoggedIn, userData } = useAuth();
+  const { isLoggedIn, userData, signOut } = useAuth();
   const router = useRouter();
 
   // Update navigation items to reflect the current route
@@ -108,7 +108,11 @@ export default function Navbar() {
                         <Menu.Item key={item.name}>
                           {({ active }) => (
                             <Link
-                              href={item.href}
+                              href={
+                                item.requiresAuth && !isLoggedIn
+                                  ? "/Login"
+                                  : item.href
+                              }
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
@@ -119,18 +123,19 @@ export default function Navbar() {
                           )}
                         </Menu.Item>
                       ))}
+
                       {isLoggedIn ? (
                         <Menu.Item>
                           {({ active }) => (
-                            <Link
-                              href="#"
+                            <p
+                              onClick={signOut}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
                               )}
                             >
                               Sign out
-                            </Link>
+                            </p>
                           )}
                         </Menu.Item>
                       ) : (
