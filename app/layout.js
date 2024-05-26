@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster"
 import SideMenu from "./(components)/SideMenu";
 import { AuthProvider } from "./Context/AuthContext";
 import Header from "./(components)/Header";
+import Footer from "./(components)/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
         {children}
       <Toaster />
       <SideMenu />
+      <Footer />
       </body>
     </html>
     </AuthProvider>
