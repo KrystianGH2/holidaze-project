@@ -6,12 +6,15 @@ import { PaginationDemo } from "../Pagination";
 import Link from "next/link";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
+import { Button } from "@/components/ui/button";
+import VenueSkeleton from "../Skeleton/VenueSkeleton";
 
 export default function Venues() {
   const [venues, setVenues] = useState([]);
   const [meta, setMeta] = useState(null);
   const [metaCurrentPage, setMetaCurrentPage] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [filters, setFilters] = useState({
     wifi: false,
@@ -37,6 +40,7 @@ export default function Venues() {
         setMeta(data.meta);
         setMetaCurrentPage(data.meta.currentPage);
         setTotalPages(data.meta.pageCount);
+        setLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -99,7 +103,7 @@ export default function Venues() {
               name="sortOrder"
               value={filters.sortOrder}
               onChange={handleFilterChange}
-              className="select select-bordered max-w-[200px]"
+              className="select select-bordered focus:outline-none bg-white max-w-[200px]"
             >
               <option value="asc">Price Low to High</option>
               <option value="desc">Price High to Low</option>
@@ -143,7 +147,7 @@ export default function Venues() {
                 name="pets"
                 checked={filters.pets}
                 onChange={handleFilterChange}
-                className="checkbox checkbox-sm"
+                className="checkbox checkbox-sm "
               />
               Pets
             </label>
@@ -168,97 +172,116 @@ export default function Venues() {
           </div>
         </section>
 
-        <div className="flex w-full flex-col gap-20">
-          <div className="flex flex-col w-full justify-center items-center gap-4">
-            {sortedVenues.length > 0 ? (
-              sortedVenues.map((venue) => {
-                return (
-                  <div
-                    key={venue.id}
-                    className="w-full max-w-3xl border rounded-sm"
-                  >
-                    <Link href={`/Venue/${venue.id}`}>
+        {loading ? (
+          <>
+            <div className="flex flex-col gap-6 justify-center items-center w-full">
+              <VenueSkeleton />
+              <VenueSkeleton />
+              <VenueSkeleton />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex w-full flex-col gap-20">
+              <div className="flex flex-col w-full justify-center items-center gap-4">
+                {sortedVenues.length > 0 ? (
+                  sortedVenues.map((venue) => {
+                    return (
                       <div
-                        className="p-2 bg-gray-500 shadow-xl rounded-none
-                       justify-between flex overflow-hidden gap-5 flex-row w-full max-w-3xl"
+                        key={venue.id}
+                        className="w-full max-w-3xl border rounded-lg hover:shadow-md hover:shadow-blue-100 transition-shadow"
                       >
-                        <div className="flex flex-row">
-                          <figure className="w-[260px]">
-                            <img
-                              className="w-full h-52 object-cover rounded-none"
-                              src={venue.media[0]?.url}
-                              alt={venue.media[0]?.alt}
-                            />
-                          </figure>
+                        <Link href={`/Venue/${venue.id}`}>
+                          <div
+                            className="p-3 shadow-xl rounded-none
+                       justify-between flex overflow-hidden gap-5 flex-row w-full max-w-3xl"
+                          >
+                            <div className="flex flex-row">
+                              <figure className="w-[260px]">
+                                <img
+                                  className="w-full h-52 object-cover rounded-none"
+                                  src={venue.media[0]?.url}
+                                  alt={venue.media[0]?.alt}
+                                />
+                              </figure>
 
-                          <div className="flex flex-col justify-between">
-                            <div className="card-body flex flex-col justify-between w-full p-4 overflow-hidden">
-                              <div className="flex flex-col">
-                                <h2 className="card-title text-xl font-semibold">
-                                  {venue.name.charAt(0).toUpperCase() +
-                                    venue.name.slice(1)}
-                                </h2>
-                                <small className="flex justify-start gap-1">
-                                  <Rating
-                                    style={{ maxWidth: 80 }}
-                                    value={venue.rating}
-                                  />
-                                  <p>{venue.rating}</p>
-                                </small>
+                              <div className="flex flex-col justify-between">
+                                <div className="card-body flex flex-col justify-between w-full p-4 overflow-hidden">
+                                  <div className="flex flex-col">
+                                    <h2 className="card-title text-xl tracking-wider font-bold text-blue-600">
+                                      {venue.name.charAt(0).toUpperCase() +
+                                        venue.name.slice(1)}
+                                    </h2>
+                                    <small className="flex justify-start gap-1">
+                                      <Rating
+                                        style={{ maxWidth: 80 }}
+                                        value={venue.rating}
+                                      />
+                                      <p>{venue.rating}</p>
+                                    </small>
+                                  </div>
+
+                                  <span>
+                                    <small className="flex max-w-[300px] underline font-medium">
+                                      {venue.location?.city &&
+                                        venue.location.city
+                                          .charAt(0)
+                                          .toUpperCase() +
+                                          venue.location.city.slice(1)}
+                                    </small>
+                                  </span>
+                                </div>
+                                <div className="pl-4 flex flex-row gap-1 text-[12px] font-medium">
+                                  <p>{venue.meta.wifi ? "Wifi " : ""}</p>
+                                  <p>{venue.meta.parking ? "Parking" : ""}</p>
+                                  <p>
+                                    {venue.meta.breakfast ? "Breakfast " : ""}
+                                  </p>
+                                  <p>{venue.meta.pets ? "Pets " : ""}</p>
+                                </div>
                               </div>
-
-                              <span>
-                                <small className="flex max-w-[300px] underline">
-                                  {venue.location?.city}
-                                </small>
-                              </span>
                             </div>
-                            <div className="pl-4 flex flex-row gap-1 text-[12px] font-normal">
-                              <p>{venue.meta.wifi ? "Wifi " : ""}</p>
-                              <p>{venue.meta.parking ? "Parking" : ""}</p>
-                              <p>{venue.meta.breakfast ? "Breakfast " : ""}</p>
-                              <p>{venue.meta.pets ? "Pets " : ""}</p>
+
+                            <div className="card-actions flex flex-col justify-end items-end">
+                              <small className="text-gray-500">
+                                Max guests {venue.maxGuests}
+                              </small>
+                              <p>
+                                NOK {venue.price}{" "}
+                                <small className="text-[13px]">per night</small>
+                              </p>
+                              <Button
+                                variant="secondary"
+                                className="text-white rounded-sm"
+                              >
+                                See Availability
+                              </Button>
                             </div>
                           </div>
-                        </div>
-
-                        <div className="card-actions flex flex-col justify-end items-end">
-                          <small className="text-gray-300">
-                            Max guests {venue.maxGuests}
-                          </small>
-                          <p>
-                            NOK {venue.price}{" "}
-                            <small className="text-[13px] font-thin">
-                              per night
-                            </small>
-                          </p>
-                          <button className="btn btn-primary text-white rounded-sm">
-                            See Availability
-                          </button>
-                        </div>
+                        </Link>
                       </div>
-                    </Link>
-                  </div>
-                );
-              })
-            ) : (
-              <>
-                <div className="flex justify-center items-center align-middle p-4 mt-6 border rounded-md">
-                  <p>No venues found matching the selected filters.</p>
-                </div>
-              </>
-            )}
-          </div>
+                    );
+                  })
+                ) : (
+                  <>
+                    <div className="flex justify-center items-center align-middle p-4 mt-6 border rounded-md">
+                      <p>No venues found matching the selected filters.</p>
+                    </div>
+                  </>
+                )}
+              </div>
 
-          <PaginationDemo
-            increasePage={increasePage}
-            decreasePage={decreasePage}
-            isLastPage={isOnLastPage()}
-            isFirstPage={isOnFirstPage()}
-            currentPage={metaCurrentPage}
-            totalPages={totalPages}
-          />
-        </div>
+              <PaginationDemo
+                increasePage={increasePage}
+                decreasePage={decreasePage}
+                isLastPage={isOnLastPage()}
+                isFirstPage={isOnFirstPage()}
+                currentPage={metaCurrentPage}
+                totalPages={totalPages}
+              />
+            </div>
+          </>
+        )}
       </main>
     </>
   );

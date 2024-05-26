@@ -24,6 +24,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { useStore } from "@/lib/useStore";
 import { useAuth } from "../Context/AuthContext";
+import { Label } from "@/components/ui/label";
 
 function DatePickerWithRange({ className, venueId, bookings, price }) {
   const { isLoggedIn } = useAuth();
@@ -128,93 +129,117 @@ function DatePickerWithRange({ className, venueId, bookings, price }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={cn("grid gap-2 text-black", className)}>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                id="date"
-                variant={"outline"}
-                className={cn(
-                  "w-[300px] justify-start text-left font-normal",
-                  !range && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {range?.from &&
-                range?.to &&
-                isValid(range.from) &&
-                isValid(range.to) ? (
-                  <>
-                    {format(range.from, "yyyy-MM-dd")} -{" "}
-                    {format(range.to, "yyyy-MM-dd")}
-                  </>
-                ) : (
-                  <span>Pick a date</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <DayPicker
-                mode="range"
-                selected={range}
-                onSelect={setRange}
-                numberOfMonths={2}
-                disabled={disabledDates}
-              />
-            </PopoverContent>
-          </Popover>
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      <main className="flex flex-col md:flex-row justify-start md:justify-between pt-4 md:max-w-[600px] w-full">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+          <div className={cn("grid gap-2 text-black", className)}>
+            <Label className="text-lg">Check Availability</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  id="date"
+                  variant={"outline"}
+                  className={cn(
+                    "w-full md:w-[300px] justify-start text-left font-normal",
+                    !range && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {range?.from &&
+                  range?.to &&
+                  isValid(range.from) &&
+                  isValid(range.to) ? (
+                    <>
+                      {format(range.from, "yyyy-MM-dd")} -{" "}
+                      {format(range.to, "yyyy-MM-dd")}
+                    </>
+                  ) : (
+                    <span>Pick a date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <DayPicker
+                  mode="range"
+                  selected={range}
+                  onSelect={setRange}
+                  numberOfMonths={2}
+                  disabled={disabledDates}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <input
+            type="hidden"
+            {...register("dateFrom")}
+            value={
+              range?.from && isValid(range.from)
+                ? format(range.from, "yyyy-MM-dd")
+                : ""
+            }
+          />
+          <input
+            type="hidden"
+            {...register("dateTo")}
+            value={
+              range?.to && isValid(range.to)
+                ? format(range.to, "yyyy-MM-dd")
+                : ""
+            }
+          />
+          <section className="flex flex-row justify-between items-center full md:max-w-[300px]">
+            <Button
+              variant="secondary"
+              type="button"
+              onClick={decreaseGuests}
+              disabled={disabledDecreaseButton()}
+              className="border bg-transparent text-blue-500 text-lg hover:bg-slate-200"
+            >
+              {" "}
+              -{" "}
+            </Button>
+            <input
+              {...register("guests", { valueAsNumber: true })}
+              id="guests"
+              value={currentGuests}
+              className="border rounded p-2 w-full mx-1 md:w-[190px] h-[40px] text-center"
+              min="1"
+            />
+            <Button
+              variant="secondary"
+              className="border bg-transparent text-blue-500 text-lg hover:bg-slate-200"
+              type="button"
+              onClick={increaseGuests}
+            >
+              {" "}
+              +{" "}
+            </Button>
+          </section>
+
+          <input type="hidden" {...register("venueId")} value={venueId} />
+          <Button
+            variant="secondary"
+            className=" w-full md:w-[300px]"
+            type="submit"
+          >
+            Reserve
+          </Button>
+        </form>
+        <div className="flex justify-start  md:items-end pt-4 ">
+          <p className="text-gray-500 text-base">
+            {" "}
+            Total Price:{""}
+            <span className="px-1">
+              {pricePerNight
+                ? `${
+                    nights === 1
+                      ? `NOK ${pricePerNight} for 1 night`
+                      : `NOK ${pricePerNight} for ${nights} nights`
+                  }`
+                : ""}
+            </span>
+          </p>
         </div>
-        <input
-          type="hidden"
-          {...register("dateFrom")}
-          value={
-            range?.from && isValid(range.from)
-              ? format(range.from, "yyyy-MM-dd")
-              : ""
-          }
-        />
-        <input
-          type="hidden"
-          {...register("dateTo")}
-          value={
-            range?.to && isValid(range.to) ? format(range.to, "yyyy-MM-dd") : ""
-          }
-        />
-        <Button
-          type="button"
-          onClick={decreaseGuests}
-          disabled={disabledDecreaseButton()}
-        >
-          {" "}
-          -{" "}
-        </Button>
-        <input
-          {...register("guests", { valueAsNumber: true })}
-          id="guests"
-          value={currentGuests}
-          className="border border-gray-300 rounded p-2"
-          min="1"
-        />
-        <Button type="button" onClick={increaseGuests}>
-          {" "}
-          +{" "}
-        </Button>
-        <input type="hidden" {...register("venueId")} value={venueId} />
-        <Button variant="secondary" type="submit">
-          Submit
-        </Button>
-      </form>
-      <p className="text-gray-500 text-base">
-        {pricePerNight
-          ? `${
-              nights === 1
-                ? `NOK ${pricePerNight} for 1 night`
-                : `NOK ${pricePerNight} for ${nights} nights`
-            }`
-          : ""}
-      </p>
+      </main>
     </>
   );
 }
