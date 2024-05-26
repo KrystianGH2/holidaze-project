@@ -23,7 +23,7 @@ export default function page() {
           conditions and Privacy statement
         </p>
         <p className="text-xs text-center">
-          All rights reserved. Copyright (2024) - Booking™
+          All rights reserved. Copyright (2024) - EasyTrips™
         </p>
       </div>
     </main>

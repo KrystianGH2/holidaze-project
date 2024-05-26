@@ -38,22 +38,18 @@ export default function Navbar() {
 
   return (
     <>
-      <Disclosure as="nav" className="bg-gray-800 w-full">
+      <Disclosure as="nav" className="bg-blue-800 h-[90px] w-full">
         <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 pt-3">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                <Button onClick={toggleOpen}>
+                <Button variant="secondary" onClick={toggleOpen}>
                   <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                 </Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
+                  <h3 className="text-xl font-bold text-white">EasyTrips</h3>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -64,8 +60,8 @@ export default function Navbar() {
                         className={classNames(
                           item.current
                             ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm font-medium"
+                            : "text-gray-300 hover:bg-slate-100 hover:bg-opacity-10 hover:text-white",
+                          "rounded-md px-3 py-2 text-base font-medium"
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
@@ -92,7 +88,7 @@ export default function Navbar() {
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
                       <img
-                        className="h-8 w-8 rounded-full"
+                        className="h-10 w-10 rounded-full"
                         src={userData.avatar?.url}
                         alt=""
                       />
