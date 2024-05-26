@@ -39,7 +39,7 @@ export default function Profile() {
         </section>
         {isLoggedIn ? (
           <>
-            <section className="flex flex-col w-full max-w-[1220px] justify-center items-center border-gray-700 border pb-6 rounded-lg ">
+            <section className="flex flex-col w-full max-w-[1220px] justify-center items-center border pb-6 rounded-lg ">
               <h1 className="py-4 text-xl tracking-wider font-medium">
                 Profile
               </h1>
@@ -49,7 +49,11 @@ export default function Profile() {
                 bannerAlt={userInfo?.banner?.alt}
                 bannerUrl={userInfo?.banner?.url}
               />
-              <Button className="my-4" onClick={handleOnClick}>
+              <Button
+                className="my-4"
+                variant="secondary"
+                onClick={handleOnClick}
+              >
                 {isFormDisabled ? (
                   <>
                     <span className="flex justify-center items-center flex-row gap-2">
@@ -62,7 +66,7 @@ export default function Profile() {
               </Button>
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="w-full max-w-xl"
+                className="w-full max-w-xl flex  flex-col gap-4"
               >
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="name">Name</Label>
