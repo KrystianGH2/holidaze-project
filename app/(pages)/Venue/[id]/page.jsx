@@ -21,7 +21,6 @@ export default function VenuePage({ params }) {
     const fetchVenue = async () => {
       try {
         const venue = await getVenueById(id);
-        console.log(venue);
         setVenue(venue.data);
         setBookings(venue.data.bookings);
         setRating(venue.data.rating);

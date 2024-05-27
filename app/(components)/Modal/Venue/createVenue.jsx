@@ -86,24 +86,18 @@ export default function CreateVenue() {
                   </div>
 
                   <div className="flex flex-col gap-3">
-                    <Label htmlFor="media.url">
-                      {" "}
-                      Media{" "}
-                      <span className="font-light text-gray-400">
-                        (Optional)
-                      </span>{" "}
-                    </Label>
+                    <Label htmlFor="media.url"> Media </Label>
 
                     <Input
                       type="text"
                       name="media[0].url"
                       placeholder="Image URL must be valid"
-                      defaultValue={"https://source.unsplash.com/random"}
+                      defaultValue={"https://i.imgur.com/jFoufpl.jpeg"}
                       {...register("media.0.url")} // Use dot notation for nested fields
                       className="text-gray-700"
                     />
                     <small className="font-light text-[13px] text-gray-400">
-                      Please add a valid URL or leave it untouched.
+                      Please add a valid URL.
                     </small>
                   </div>
 
