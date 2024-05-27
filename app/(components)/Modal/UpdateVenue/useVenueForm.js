@@ -43,7 +43,6 @@ export function useVenueForm({ venueId, venues }) {
         variant: "success",
       });
 
-      console.log(res);
     } catch (err) {
       console.log(err);
       return toast({

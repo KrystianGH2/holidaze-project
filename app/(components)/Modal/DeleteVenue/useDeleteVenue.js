@@ -11,14 +11,13 @@ export default function useDeleteVenue() {
     try {
       const res = await deleteVenue(venueId);
       if (res) {
-        console.log("Venue deleted", res);
-      }
+      
       toast({
         title: "Venue Deleted!",
         duration: 2000,
         description: "Venue successfully Deleted!",
         variant: "success",
-      });
+      })}
     } catch (error) {
       console.log(error);
       return toast({

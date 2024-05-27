@@ -28,7 +28,6 @@ export default function MyBookings() {
     const fetchUserBookings = async () => {
       const response = await usersBookings(userName);
       setUserBookings(response.data);
-      console.log(response.data);
     };
     fetchUserBookings();
   }, [userName]);

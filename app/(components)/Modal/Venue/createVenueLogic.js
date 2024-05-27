@@ -59,7 +59,6 @@ export default function useVenueLogic() {
         variant: "success",
       });
 
-      console.log(res);
     } catch (err) {
       console.log(err);
       return toast({

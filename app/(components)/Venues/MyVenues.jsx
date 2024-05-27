@@ -36,7 +36,6 @@ export default function MyVenues() {
           getAllVenueByProfile(userName),
           getProfiles(userName),
         ]);
-        console.log(venueRes.data);
         setVenues(venueRes.data);
         setIVenueManager(profileRes.data.venueManager);
       } catch (err) {
