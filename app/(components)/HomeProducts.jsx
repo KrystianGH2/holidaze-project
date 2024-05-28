@@ -28,7 +28,12 @@ export default function HomeProducts() {
   }, []);
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;
+    return (
+      <div className="flex flex-col justify-center items-center text-center gap-5">
+        <p>Loading...</p>
+        <span className="loading bg-gray-400 loading-spinner loading-lg"></span>
+      </div>
+    );
   }
 
   if (error) {
