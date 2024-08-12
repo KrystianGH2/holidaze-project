@@ -164,7 +164,7 @@ export default function Venues() {
               type="range"
               name="price"
               min={100}
-              max={10000}
+              max={30000}
               value={filters.price}
               onChange={handleFilterChange}
               className="range range-xs"
